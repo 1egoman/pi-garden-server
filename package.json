@@ -1,0 +1,21 @@
+{
+  "name": "hydroponic-garden-thing",
+  "version": "0.0.0",
+  "description": "Controller for my hydroponic garden",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "garden",
+    "hydroponic",
+    "thing",
+    "iot-thing"
+  ],
+  "author": "Ryan Gaus <rsg1egoman@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "iot-thing": "0.0.8",
+    "strftime": "^0.8.2"
+  }
+}
