@@ -10,13 +10,14 @@ module.exports = function(thing) {
     // turn on the pump
     turnOn: function(callback) {
       var that = this;
+      if (this.pumpOn) return;
       // gpio.open(config.gpiopump, "output", function(err) {
       //   gpio.write(config.gpiopump, 1, function() {
       //     gpio.close(config.gpiopump);
-          that.pumpOn = true;
+          this.pumpOn = true;
       //   });
       // });
-      console.log("DO CYCLE:", true);
+      console.log("DO CYCLE:", this.pumpOn);
     },
 
     // turn off the pump
@@ -28,14 +29,14 @@ module.exports = function(thing) {
           that.pumpOn = false;
       //   });
       // });
-      console.log("DO CYCLE:", false);
+      console.log("DO CYCLE:", this.pumpOn);
     },
 
 
     // run the pump cycle
     doCycle: function(duration, when) {
       var that = this;
-      if (this.pumpOn) return false
+      // if (this.pumpOn) return false
       // turn on pump
       this.turnOn();
       console.log("Pump is on. Will turn off in", duration, "minutes.");

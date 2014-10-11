@@ -2,7 +2,8 @@ var thing = require("iot-thing");
 var strftime = require("strftime");
 
 // create the thing
-new thing("127.0.0.1" || process.env.HOST, 8000 || process.env.PORT, {}, {
+// new thing("127.0.0.1" || process.env.HOST, 8000 || process.env.PORT, {}, {
+new thing("que-app-backend.herokuapp.com", 80, {}, {
   name: "Hydroponic Garden",
   desc: "A garden that grows me stuff",
   tags: ["garden", "hydroponics"],
@@ -43,14 +44,17 @@ new thing("127.0.0.1" || process.env.HOST, 8000 || process.env.PORT, {}, {
 
     // manually do a cycle
     thing.data.pull("turnPumpOn", function(doCycle) {
-      if (doCycle.value) {
-        thing.data.push("turnPumpOn", false, function() {});
+      thing.data.pull("wateringDurationMinutes", function(duration) {
+        if (doCycle.value && pump.pumpOn == false) {
+          thing.data.push("turnPumpOn", false, function() {});
 
-        thing.data.pull("wateringDurationMinutes", function(duration) {
-          pump.doCycle(duration.value, null);
-        });
+          if (!pump.pumpOn) {
+            pump.doCycle(duration.value, null);
+            pump.pumpOn = true;
+          }
 
-      };
+        };
+      });
     });
 
   }, 1000);
