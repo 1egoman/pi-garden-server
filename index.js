@@ -1,63 +1,24 @@
-var thing = require("iot-thing");
+var express = require("express");
 var strftime = require("strftime");
+var pump = require("./pump")();
+var h, p;
 
-// create the thing
-// new thing("127.0.0.1" || process.env.HOST, 8000 || process.env.PORT, {}, {
-new thing("que-app-backend.herokuapp.com", 80, {}, {
-  name: "Hydroponic Garden",
-  desc: "A garden that grows me stuff",
-  tags: ["garden", "hydroponics"],
-  image: "http://panamashippingcontainerhouse.com/wp-content/uploads/2012/07/Hydroponics-650x487.jpg",
-  data: {
-    wateringTime: {
-      value: "11:00:00"
-    },
-    wateringDurationMinutes: {
-      value: 10
-    },
-    currentlyWatering: {
-      value: false,
-      type: "button",
-      readonly: true
-    },
-    turnPumpOn: {
-      label: "Run pump through a cycle",
-      value: false
-    }
-  }
-}, function(thing, err) {
+if (process.argv[2] == "h") {
+  h = "que-app-backend.herokuapp.com";
+  p = 80;
+  console.log("On Heroku")
+} else {
+  h = "127.0.0.1";
+  p = 8000;
+}
+var app = express();
 
-  var pump = require("./pump")(thing);
-  thing || console.log(err);
+// test to see if it is time for the pump to turn on
+app.get("/water/cycle/:duration", function(req, res) {
+  pump.doCycle( parseFloat(req.param("duration")) );
+  res.send("OK.");
+});
 
-  // the global timer
-  var globalTimer = setInterval(function() {
-    // test to see if it is time for the pump to turn on
-    thing.data.pull("wateringTime", function(when) {
-    // console.log(strftime('%T'), when)
-      if ( strftime('%T') == when.value ) {
-        thing.data.pull("wateringDurationMinutes", function(duration) {
-          pump.doCycle(duration.value, when.value);
-        });
-      }
-    });
-
-    // manually do a cycle
-    thing.data.pull("turnPumpOn", function(doCycle) {
-      thing.data.pull("wateringDurationMinutes", function(duration) {
-        if (doCycle.value && pump.pumpOn == false) {
-          thing.data.push("turnPumpOn", false, function() {});
-
-          if (!pump.pumpOn) {
-            pump.doCycle(duration.value, null);
-            pump.pumpOn = true;
-          }
-
-        };
-      });
-    });
-
-  }, 1000);
-
-
+app.listen(process.env.PORT || 7000, function() {
+  console.log("listening...")
 });

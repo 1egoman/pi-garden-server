@@ -1,7 +1,7 @@
 // var gpio = require("pi-gpio");
 
 // pump object
-module.exports = function(thing) {
+module.exports = function() {
   return {
 
     // is pump on?
@@ -44,7 +44,6 @@ module.exports = function(thing) {
 
       // count down
       counter = function() {
-        thing.data.push("currentlyWatering", countDown, function(){});
         countDown--;
         if (countDown > 0) {
           setTimeout(counter, 1000);
@@ -52,7 +51,6 @@ module.exports = function(thing) {
           // turn off the pump after the cycle is complete
           that.turnOff();
           when && console.log("Pump is now off. Next automatic cycle at", when, "tommorrow.") || console.log("Pump is now off.");
-          thing.data.push("currentlyWatering", false, function(){});
         }
       }
       setTimeout(counter, 1000);

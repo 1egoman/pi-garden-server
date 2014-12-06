@@ -15,7 +15,7 @@
   "author": "Ryan Gaus <rsg1egoman@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "iot-thing": "0.0.8",
+    "express": "^4.10.4",
     "strftime": "^0.8.2"
   }
 }
