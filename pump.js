@@ -1,4 +1,4 @@
-// var gpio = require("pi-gpio");
+var gpio = require("pi-gpio");
 
 // pump object
 module.exports = function() {
@@ -11,24 +11,24 @@ module.exports = function() {
     turnOn: function(callback) {
       var that = this;
       if (this.pumpOn) return;
-      // gpio.open(config.gpiopump, "output", function(err) {
-      //   gpio.write(config.gpiopump, 1, function() {
-      //     gpio.close(config.gpiopump);
+      gpio.open(config.gpiopump, "output", function(err) {
+        gpio.write(config.gpiopump, 1, function() {
+          gpio.close(config.gpiopump);
           this.pumpOn = true;
-      //   });
-      // });
+        });
+      });
       console.log("DO CYCLE:", this.pumpOn);
     },
 
     // turn off the pump
     turnOff: function() {
       var that = this;
-      // gpio.open(config.gpiopump, "output", function(err) {
-      //   gpio.write(config.gpiopump, 0, function() {
-      //     gpio.close(config.gpiopump);
+      gpio.open(config.gpiopump, "output", function(err) {
+        gpio.write(config.gpiopump, 0, function() {
+          gpio.close(config.gpiopump);
           that.pumpOn = false;
-      //   });
-      // });
+        });
+      });
       console.log("DO CYCLE:", this.pumpOn);
     },
 
@@ -36,7 +36,7 @@ module.exports = function() {
     // run the pump cycle
     doCycle: function(duration, when) {
       var that = this;
-      // if (this.pumpOn) return false
+      if (this.pumpOn) return false;
       // turn on pump
       this.turnOn();
       console.log("Pump is on. Will turn off in", duration, "minutes.");
