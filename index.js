@@ -20,6 +20,8 @@ app.get("/water/cycle/:duration", function(req, res) {
     // do it!
     pump.doCycle( parseFloat(req.param("duration")) );
     res.send("OK.");
+  } else {
+    res.send("NO AUTH.");
   }
 });
 
