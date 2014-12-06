@@ -16,7 +16,7 @@ var app = express();
 // test to see if it is time for the pump to turn on
 app.get("/water/cycle/:duration", function(req, res) {
   // first, check auth header
-  if (req.headers.Authentication == process.env.AUTHKEY || process.argv[2]) {
+  if (req.headers.Authentication && (req.headers.Authentication == process.env.AUTHKEY || process.argv[2])) {
     // do it!
     pump.doCycle( parseFloat(req.param("duration")) );
     res.send("OK.");
