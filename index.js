@@ -1,6 +1,6 @@
 var express = require("express");
 var strftime = require("strftime");
-var pump = require("./pump")();
+var pump = require("./pump")({gpiopump: process.env.GPIOPUMP || 16});
 var h, p;
 
 if (process.argv[2] == "h") {

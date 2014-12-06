@@ -1,7 +1,7 @@
 var gpio = require("pi-gpio");
 
 // pump object
-module.exports = function() {
+module.exports = function(config) {
   return {
 
     // is pump on?
