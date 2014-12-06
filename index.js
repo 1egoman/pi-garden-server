@@ -15,8 +15,12 @@ var app = express();
 
 // test to see if it is time for the pump to turn on
 app.get("/water/cycle/:duration", function(req, res) {
-  pump.doCycle( parseFloat(req.param("duration")) );
-  res.send("OK.");
+  // first, check auth header
+  if (req.headers.Authentication == process.env.AUTHKEY || process.argv[2]) {
+    // do it!
+    pump.doCycle( parseFloat(req.param("duration")) );
+    res.send("OK.");
+  }
 });
 
 app.listen(process.env.PORT || 7000, function() {
